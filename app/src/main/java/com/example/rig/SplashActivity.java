@@ -16,7 +16,6 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-
         new Handler(Looper.getMainLooper()).postDelayed(() -> {
             FirebaseAuth auth = FirebaseAuth.getInstance();
             Intent intent;
@@ -32,5 +31,6 @@ public class SplashActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         }, 2000);
+
     }
 }
