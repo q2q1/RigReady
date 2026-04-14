@@ -2,7 +2,7 @@ package com.example.rig;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
+
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -36,8 +36,8 @@ public class ForgotPasswordActivity extends AppCompatActivity {
 
     private void attemptReset() {
         String email = etForgotEmail.getText() != null ? etForgotEmail.getText().toString().trim() : "";
-        if (TextUtils.isEmpty(email)) {
-            Toast.makeText(this, "Please enter email", Toast.LENGTH_SHORT).show();
+        if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            Toast.makeText(this, "Please enter a valid email address", Toast.LENGTH_SHORT).show();
             return;
         }
 
