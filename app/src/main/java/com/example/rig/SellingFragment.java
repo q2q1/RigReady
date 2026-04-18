@@ -2,6 +2,7 @@ package com.example.rig;
 
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -144,7 +145,7 @@ public class SellingFragment extends Fragment {
         String description = getText(etProductDescription);
         String priceText = getText(etProductPrice);
 
-        if (name.isEmpty() || brand.isEmpty() || description.isEmpty() || priceText.isEmpty()) {
+        if (TextUtils.isEmpty(name) || TextUtils.isEmpty(brand) || TextUtils.isEmpty(description) || TextUtils.isEmpty(priceText)) {
             Toast.makeText(requireContext(), "Please fill in all product information.", Toast.LENGTH_SHORT).show();
             return;
         }

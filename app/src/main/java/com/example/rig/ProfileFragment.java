@@ -3,6 +3,7 @@ package com.example.rig;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -152,15 +153,15 @@ public class ProfileFragment extends Fragment {
         String safeAddress = address != null ? address : "";
         String safeAbout = about != null ? about : "";
 
-        tvNameValue.setText(!safeName.isEmpty() ? safeName : "-");
-        tvAddressValue.setText(!safeAddress.isEmpty() ? safeAddress : "-");
-        tvAboutValue.setText(!safeAbout.isEmpty() ? safeAbout : "-");
+        tvNameValue.setText(!TextUtils.isEmpty(safeName) ? safeName : "-");
+        tvAddressValue.setText(!TextUtils.isEmpty(safeAddress) ? safeAddress : "-");
+        tvAboutValue.setText(!TextUtils.isEmpty(safeAbout) ? safeAbout : "-");
 
         etName.setText(safeName);
         etAddress.setText(safeAddress);
         etAbout.setText(safeAbout);
 
-        if (photoUrl != null && !photoUrl.isEmpty()) {
+        if (!TextUtils.isEmpty(photoUrl)) {
             Glide.with(requireContext()).load(photoUrl).centerCrop().into(ivAvatar);
         }
     }
@@ -186,9 +187,9 @@ public class ProfileFragment extends Fragment {
                 .addOnFailureListener(e -> Toast.makeText(requireContext(), "Failed to save profile: " + e.getMessage(), Toast.LENGTH_SHORT).show());
 
         // Switch back immediately for MVP feel
-        tvNameValue.setText(!name.isEmpty() ? name : "-");
-        tvAddressValue.setText(!address.isEmpty() ? address : "-");
-        tvAboutValue.setText(!about.isEmpty() ? about : "-");
+        tvNameValue.setText(!TextUtils.isEmpty(name) ? name : "-");
+        tvAddressValue.setText(!TextUtils.isEmpty(address) ? address : "-");
+        tvAboutValue.setText(!TextUtils.isEmpty(about) ? about : "-");
         setEditing(false);
     }
 

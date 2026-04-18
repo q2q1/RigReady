@@ -2,6 +2,7 @@ package com.example.rig;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -39,7 +40,7 @@ public class ProductDetailActivity extends AppCompatActivity {
         btnBuy = findViewById(R.id.btnBuy);
 
         String productId = getIntent().getStringExtra(EXTRA_PRODUCT_ID);
-        if (productId == null || productId.isEmpty()) {
+        if (TextUtils.isEmpty(productId)) {
             Toast.makeText(this, "Invalid product ID.", Toast.LENGTH_SHORT).show();
             finish();
             return;
@@ -73,7 +74,7 @@ public class ProductDetailActivity extends AppCompatActivity {
         tvBrand.setText(p.brand != null ? p.brand : "");
         tvDescription.setText(p.description != null ? p.description : "");
 
-        if (p.imageUrl != null && !p.imageUrl.isEmpty()) {
+        if (!TextUtils.isEmpty(p.imageUrl)) {
             Glide.with(this).load(p.imageUrl).centerCrop().into(ivProduct);
         } else {
             ivProduct.setImageDrawable(null);

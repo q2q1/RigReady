@@ -43,7 +43,7 @@ public class CheckoutActivity extends AppCompatActivity {
         btnPayNow = findViewById(R.id.btnPayNow);
 
         productId = getIntent().getStringExtra(EXTRA_PRODUCT_ID);
-        if (productId == null || productId.isEmpty()) {
+        if (TextUtils.isEmpty(productId)) {
             Toast.makeText(this, "Invalid product ID.", Toast.LENGTH_SHORT).show();
             finish();
             return;

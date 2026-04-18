@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -51,7 +52,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         holder.tvName.setText(p.name != null ? p.name : "");
         holder.tvPrice.setText(String.format("$%.2f", p.price));
 
-        if (p.imageUrl != null && !p.imageUrl.isEmpty()) {
+        if (!TextUtils.isEmpty(p.imageUrl)) {
             Glide.with(holder.ivProduct.getContext())
                     .load(p.imageUrl)
                     .centerCrop()

@@ -44,7 +44,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         FirebaseAuth.getInstance().sendPasswordResetEmail(email)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        Toast.makeText(this, "Password reset email sent. Please check your inbox.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, "If an account exists for this email, a reset link was sent. Check inbox and spam.", Toast.LENGTH_LONG).show();
                         startActivity(new Intent(this, LoginActivity.class));
                         finish();
                     } else {

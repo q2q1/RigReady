@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -51,7 +52,7 @@ public class MyListingAdapter extends RecyclerView.Adapter<MyListingAdapter.MyLi
         holder.tvListingPrice.setText(String.format("$%.2f", p.price));
         holder.tvListingStatus.setText(p.status != null ? p.status : "");
 
-        if (p.imageUrl != null && !p.imageUrl.isEmpty()) {
+        if (!TextUtils.isEmpty(p.imageUrl)) {
             Glide.with(holder.ivListingImage.getContext()).load(p.imageUrl).centerCrop().into(holder.ivListingImage);
         } else {
             holder.ivListingImage.setImageDrawable(null);
