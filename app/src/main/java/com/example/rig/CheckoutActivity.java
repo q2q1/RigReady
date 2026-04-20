@@ -70,9 +70,10 @@ public class CheckoutActivity extends AppCompatActivity {
             return;
         }
 
-        // Stripe PaymentSheet requires a backend-created PaymentIntent client_secret.
-        // This project will continue once you fill keys + backend wiring in MainActivity2.
-        startActivity(new Intent(this, MainActivity2.class));
+
+        Intent i = new Intent(this, MainActivity2.class);
+        i.putExtra(EXTRA_PRODUCT_ID, productId);
+        startActivity(i);
     }
 
     private String getPaymentMethod() {

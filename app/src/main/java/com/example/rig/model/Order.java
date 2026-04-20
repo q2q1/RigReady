@@ -24,7 +24,7 @@ public class Order {
         o.sellerId = doc.getString("sellerId");
         o.productId = doc.getString("productId");
         o.productName = doc.getString("productName");
-        Double price = doc.getDouble("price");
+        Double price = doc.getDouble("amount");
         o.price = price != null ? price : 0.0;
         o.status = doc.getString("status");
         o.paymentMethod = doc.getString("paymentMethod");

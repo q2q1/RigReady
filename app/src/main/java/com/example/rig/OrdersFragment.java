@@ -22,6 +22,7 @@ import java.util.List;
 public class OrdersFragment extends Fragment {
 
     private ListenerRegistration ordersListener;
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     public OrdersFragment() {
         super(R.layout.fragment_orders);
@@ -46,7 +47,6 @@ public class OrdersFragment extends Fragment {
                 ? FirebaseAuth.getInstance().getCurrentUser().getUid()
                 : null;
         if (uid == null) {
-            // 登录守卫一般会拦截，这里做兜底
             return;
         }
 
@@ -58,6 +58,7 @@ public class OrdersFragment extends Fragment {
 
                     List<Order> list = new ArrayList<>();
                     for (DocumentSnapshot doc : value.getDocuments()) {
+                        System.out.println("ORDER DATA: " + doc.getData());
                         list.add(Order.from(doc));
                     }
                     adapter.setItems(list);
