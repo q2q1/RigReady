@@ -1,5 +1,6 @@
 package com.example.rig;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -37,7 +38,8 @@ public class MainActivity2 extends AppCompatActivity {
     private String ClientSecretURL = "https://api.stripe.com/v1/payment_intents";
 
     private String CustomerId = null;  // Initialize CustomerId as null
-    private String EphericalKey;
+    // IMPORTANT: PaymentSheet needs the Ephemeral Key *secret*, not the "id".
+    private String EphericalKeySecret;
     private String ClientSecret;
     private PaymentSheet paymentSheet;
     private String Amount = "50000";  // Amount in cents
@@ -111,12 +113,14 @@ public class MainActivity2 extends AppCompatActivity {
             public void onResponse(String response) {
                 try {
                     JSONObject object = new JSONObject(response);
-                    EphericalKey = object.getString("id");
-                    Log.d("Stripe", "Ephemeral Key created: " + EphericalKey);
+                    // Stripe returns { id: "...", object: "ephemeral_key", secret: "ek_test_..." }
+                    // PaymentSheet.CustomerConfiguration expects the *secret* value.
+                    EphericalKeySecret = object.getString("secret");
+                    Log.d("Stripe", "Ephemeral Key secret received");
 
                     // Now get the Client Secret after the Ephemeral Key is fetched
-                    if (EphericalKey != null && !EphericalKey.isEmpty()) {
-                        getClientSecret(CustomerId, EphericalKey);
+                    if (EphericalKeySecret != null && !EphericalKeySecret.isEmpty()) {
+                        getClientSecret(CustomerId, EphericalKeySecret);
                     } else {
                         Toast.makeText(MainActivity2.this, "Failed to fetch ephemeral key", Toast.LENGTH_SHORT).show();
                     }
@@ -192,7 +196,7 @@ public class MainActivity2 extends AppCompatActivity {
     private void paymentFlow() {
         if (ClientSecret != null && !ClientSecret.isEmpty()) {
             paymentSheet.presentWithPaymentIntent(ClientSecret, new PaymentSheet.Configuration("Stripe", new PaymentSheet.CustomerConfiguration(
-                    CustomerId, EphericalKey
+                    CustomerId, EphericalKeySecret
             )));
         } else {
             Toast.makeText(MainActivity2.this, "Client Secret not available", Toast.LENGTH_SHORT).show();
@@ -200,13 +204,38 @@ public class MainActivity2 extends AppCompatActivity {
     }
 
     private void onPaymentResult(PaymentSheetResult paymentSheetResult) {
-        if (paymentSheetResult instanceof PaymentSheetResult.Completed) {
-            Toast.makeText(this, "Payment Success", Toast.LENGTH_SHORT).show();
 
-            //you also need to send the firebase as well
-            //if u need
-        } else {
-            Toast.makeText(this, "Payment Failed", Toast.LENGTH_SHORT).show();
+        if (paymentSheetResult instanceof PaymentSheetResult.Completed) {
+
+            Intent i = new Intent(this, PaymentResultActivity.class);
+            i.putExtra(PaymentResultActivity.EXTRA_SUCCESS, true);
+            i.putExtra("order_amount", Amount);
+
+            // pass productId from CheckoutActivity
+            i.putExtra(
+                    PaymentResultActivity.EXTRA_ORDER_ID,
+                    getIntent().getStringExtra(CheckoutActivity.EXTRA_PRODUCT_ID)
+            );
+            startActivity(i);
+            finish();
+        }
+
+        else if (paymentSheetResult instanceof PaymentSheetResult.Canceled) {
+
+            Intent i = new Intent(this, PaymentResultActivity.class);
+            i.putExtra(PaymentResultActivity.EXTRA_SUCCESS, false);
+
+            startActivity(i);
+            finish();
+        }
+
+        else if (paymentSheetResult instanceof PaymentSheetResult.Failed) {
+
+            Intent i = new Intent(this, PaymentResultActivity.class);
+            i.putExtra(PaymentResultActivity.EXTRA_SUCCESS, false);
+
+            startActivity(i);
+            finish();
         }
     }
 }
